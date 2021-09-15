@@ -39,12 +39,8 @@ void ofApp::setup() {
 
 	//Cargamos las fuentes
 	resourceFT.load("lucon.ttf", 20);
-	messageFT.load("lucon.ttf", 40);
 	//Cargamos los textos
 	resource_text = "Recursos = 0";
-	//Posicionamos los textos
-	messageTextPos.x = width / 2 - messageFT.stringWidth(message_text) / 2;
-	messageTextPos.y = height / 2;
 
 	//Inicializamos las variables de tipo enteras
 	resources = 0;
@@ -104,10 +100,10 @@ void ofApp::draw() {
 	bg.draw(0, 0, width, height);//fondo
 	//bidones
 	fuel.drawFuel();
-	//Jugador
-	player.draw();
 	//Personas
 	people.drawPeople();
+	//Jugador
+	player.draw();
 	jet.draw(jetPos);//jet
 	alien.draw(alienPos);
 	plane1.draw(plane1Pos);
@@ -135,6 +131,12 @@ void ofApp::draw() {
 	if (resources >= 100) {
 		win.draw(0, 0);
 		pause = !pause;
+	}
+
+	//Si el tiempo se termina
+	if (timeBarWidth <= 0.0f)
+	{
+		loose.draw(0, 0);
 	}
 
 	
@@ -234,10 +236,7 @@ void ofApp::timer() {
 	if (timeBarWidth <= 0.0f)
 	{
 		pause = true; //Se pausa el juego
-
-		//Se muestra este mensaje en esta posición.
-		message_text = "¡Te quedaste sin tiempo! ¡La nave ha despegado!";
-		messageTextPos.x = width / 2 - (messageFT.stringWidth(message_text) / 2);
+		muerte.play();
 	}
 
 	if (timeBarWidth <= 2.0f) {

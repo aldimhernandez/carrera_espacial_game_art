@@ -35,11 +35,11 @@ public:
 	//Imagenes
 	ofImage bg, jet, plane1, plane2, alien, loose, win, introImage;
 	//Vector para guardar 2 valores, en este caso de posiciones.
-	ofVec2f jetPos, plane1Pos, plane2Pos, alienPos, messageTextPos, timeBarPosition;
+	ofVec2f jetPos, plane1Pos, plane2Pos, alienPos, timeBarPosition;
 	//Fuentes
 	ofTrueTypeFont resourceFT, messageFT;
 	//Textos
-	string resource_text, message_text;
+	string resource_text;
 	//Sonidos
 	ofSoundPlayer intro, normal, fast, muerte, malbidon, ecobidon;
 
