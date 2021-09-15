@@ -27,7 +27,7 @@ public:
 	const float height = 1080;
 
 	//Booleanos
-	bool fullScreen, jetOn, alienOn, plane1On, plane2On, pause, gameOver, agree;
+	bool fullScreen, jetOn, alienOn, plane1On, plane2On, pause, agree, gameover;
 	//Variables de tipo entero
 	int resources, peopleMax, x, y;
 	//Variables de tipo decimal
@@ -39,7 +39,7 @@ public:
 	//Fuentes
 	ofTrueTypeFont resourceFT, messageFT;
 	//Textos
-	string resource_text, message_text, gameOver_text;
+	string resource_text, message_text;
 	//Sonidos
 	ofSoundPlayer intro, normal, fast, muerte, malbidon, ecobidon;
 

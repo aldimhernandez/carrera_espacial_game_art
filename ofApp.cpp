@@ -6,6 +6,7 @@ void ofApp::setup() {
 
 	ofSetFrameRate(60); //Seteamos el framerate en 60
 	ofHideCursor(); //Ocultamos el cursor
+	ofSetWindowTitle("Carrera Espacial. Lograras sobrevivir?");
 
 	//Las variables boolenas
 	fullScreen = false;
@@ -15,7 +16,7 @@ void ofApp::setup() {
 	alienOn = false;
 	plane1On = false;
 	plane2On = false;
-	gameOver = false;
+	gameover = false;
 
 	//Cargamos las imagenes
 	bg.load("img/background.png");
@@ -29,6 +30,7 @@ void ofApp::setup() {
 
 	//Cargamos los sonidos
 	intro.load("audio/intro.wav");
+	intro.play();
 	normal.load("audio/juegonormal.wav");
 	fast.load("audio/juegorapido.wav");
 	muerte.load("audio/muerte.wav");
@@ -40,8 +42,6 @@ void ofApp::setup() {
 	messageFT.load("lucon.ttf", 40);
 	//Cargamos los textos
 	resource_text = "Recursos = 0";
-	message_text = "¡Presiona ENTER para jugar!";
-	gameOver_text = "";
 	//Posicionamos los textos
 	messageTextPos.x = width / 2 - messageFT.stringWidth(message_text) / 2;
 	messageTextPos.y = height / 2;
@@ -69,7 +69,7 @@ void ofApp::setup() {
 void ofApp::update() {
 
 	//Si el juego no esta en PAUSA
-	if (!pause) {
+	if (!pause && gameover == false) {
 
 		//Timer
 		timer();
@@ -85,6 +85,8 @@ void ofApp::update() {
 
 		//Actualizar personas
 		people.update();
+
+		soundSettings();
 	}
 }
 
@@ -98,11 +100,18 @@ void ofApp::draw() {
 		ofScale(ofGetWidth() / width, ofGetHeight() / height);
 
 	//Dibujamos las imagenes con sus respectivas posiciones dinamicas
-	bg.draw(0, 0, width, height);
-	jet.draw(jetPos);
+
+	bg.draw(0, 0, width, height);//fondo
+	//bidones
+	fuel.drawFuel();
+	//Jugador
+	player.draw();
+	//Personas
+	people.drawPeople();
+	jet.draw(jetPos);//jet
 	alien.draw(alienPos);
 	plane1.draw(plane1Pos);
-	plane2.draw(plane1Pos);
+	plane2.draw(plane2Pos);
 
 	//Color de la barra de tiempo
 	ofSetColor(ofColor::red);
@@ -114,22 +123,21 @@ void ofApp::draw() {
 
 	//Si esta en pausa muestra el texto "Presiona ENTER para jugar"
 	if (pause) {
-		ofSetColor(ofColor::white);
-		messageFT.drawString(message_text, messageTextPos.x, messageTextPos.y);
+		introImage.draw(0, 0);
 	}
 
-	//Fuel
-	/*for (int i = 0; i < 2; i++) {
-		bioFuel[i].draw();
-		fuel[i].draw();
-	}*/
+	for (int i = 0; i < 6; i++) {
+		if ((people.humanos[i].y > player.y - 25) && (people.humanos[i].y < player.y + 25) && (people.humanos[i].x > player.x - 25) && (people.humanos[i].x < player.x + 25)) {
+			loose.draw(0, 0);
+		}
+	}
 
-	fuel.drawFuel();
+	if (resources >= 100) {
+		win.draw(0, 0);
+		pause = !pause;
+	}
 
-	//Jugador
-	player.draw();
-	//Personas
-	people.drawPeople();
+	
 }
  
 //--- CALLBACK, esta escuchando si el usuario presiona determinada tecla ---------------
@@ -231,6 +239,10 @@ void ofApp::timer() {
 		message_text = "¡Te quedaste sin tiempo! ¡La nave ha despegado!";
 		messageTextPos.x = width / 2 - (messageFT.stringWidth(message_text) / 2);
 	}
+
+	if (timeBarWidth <= 2.0f) {
+	
+	}
 }
 
 //--------------------------------------------------------------
@@ -258,7 +270,7 @@ void ofApp::scenery() {
 
 	if (!plane1On) {
 		speed = ofRandom(1, 4);
-		plane1Pos.set(ofRandom(1300, 1900), -900);
+		plane1Pos.set(ofRandom(1600, 1900), -900);
 		plane1On = true;
 	}
 	else {
@@ -267,20 +279,27 @@ void ofApp::scenery() {
 	}
 
 	if (!plane2On) {
-		speed = ofRandom(1, 5);
-		plane2Pos.set(width + ofRandom(500), ofRandom(200));
+		speed = ofRandom(3, 6);
+		plane2Pos.set(ofRandom(1700, 1900), ofRandom(-200));
 		plane2On = true;
 	}
 	else {
-		plane2Pos.x -= speed;
-		if (plane2Pos.x > ofRandom(-500)) plane2On = false;
+		plane2Pos.y += speed;
+		if (plane2Pos.y > height + ofRandom(-500)) plane2On = false;
 	}
 }
 
 void ofApp::soundSettings() {
 	if (OF_KEY_RETURN) {
 
+		if (pause) {
+			normal.stop();
+			intro.setLoop(true);
+			intro.play();
+		}
+
 		if (!pause) {
+			
 			if (intro.isPlaying()) {
 				intro.stop();
 				normal.setLoop(true);
@@ -304,10 +323,6 @@ void ofApp::playerCrash() {
 			agree = false;
 
 			muerte.play();
-
-			//Se muestra este mensaje en esta posición.
-			message_text = "¡Game Over!";
-			messageTextPos.x = width / 2 - (messageFT.stringWidth(message_text) / 2);
 		}
 	}
 }
@@ -337,5 +352,5 @@ void ofApp::fuelCollector() {
 			fuel.bidones[i].x = ofRandom(500, 1200);
 			fuel.bidones[i].y = ofRandom(100, 950);
 		}
-	}
+	} 
 }
