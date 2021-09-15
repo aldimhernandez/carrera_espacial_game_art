@@ -33,7 +33,7 @@ public:
 	//Variables de tipo decimal
 	float speed, initialWidthTimeBar, timeBarWidth, timeBarHeight, totalTime;
 	//Imagenes
-	ofImage bg, jet, plane1, plane2, alien;
+	ofImage bg, jet, plane1, plane2, alien, loose, win, introImage;
 	//Vector para guardar 2 valores, en este caso de posiciones.
 	ofVec2f jetPos, plane1Pos, plane2Pos, alienPos, messageTextPos, timeBarPosition;
 	//Fuentes
@@ -41,7 +41,7 @@ public:
 	//Textos
 	string resource_text, message_text, gameOver_text;
 	//Sonidos
-	ofSoundPlayer intro, normal, fast;
+	ofSoundPlayer intro, normal, fast, muerte, malbidon, ecobidon;
 
 	Player player;
 	People people;

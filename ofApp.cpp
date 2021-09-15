@@ -23,11 +23,17 @@ void ofApp::setup() {
 	alien.load("img/alien.png");
 	plane1.load("img/plane1.png");
 	plane2.load("img/plane2.png");
+	loose.load("img/loose.png");
+	win.load("img/win.png");
+	introImage.load("img/intro.png");
 
 	//Cargamos los sonidos
 	intro.load("audio/intro.wav");
 	normal.load("audio/juegonormal.wav");
 	fast.load("audio/juegorapido.wav");
+	muerte.load("audio/muerte.wav");
+	malbidon.load("audio/malbidon.wav");
+	ecobidon.load("audio/ecobidon.wav");
 
 	//Cargamos las fuentes
 	resourceFT.load("lucon.ttf", 20);
@@ -297,6 +303,8 @@ void ofApp::playerCrash() {
 			pause = true;
 			agree = false;
 
+			muerte.play();
+
 			//Se muestra este mensaje en esta posición.
 			message_text = "¡Game Over!";
 			messageTextPos.x = width / 2 - (messageFT.stringWidth(message_text) / 2);
@@ -315,12 +323,16 @@ void ofApp::fuelCollector() {
 			resources += 5;
 			totalTime -= 5;
 
+			malbidon.play();
+
 			fuel.bidones[i].x = ofRandom(500, 1200);
 			fuel.bidones[i].y = ofRandom(100, 950);
 		}
 		else if ((fuel.bidones[i].y > player.y - 25) && (fuel.bidones[i].y < player.y + 25) && (fuel.bidones[i].x > player.x - 25) && (fuel.bidones[i].x < player.x + 25) && fuel.bidones[i].type == 2) {
 			resources += 10;
 			totalTime += 10;
+
+			ecobidon.play();
 
 			fuel.bidones[i].x = ofRandom(500, 1200);
 			fuel.bidones[i].y = ofRandom(100, 950);
