@@ -258,33 +258,33 @@ void ofApp::scenery() {
 	}
 
 	if (!alienOn) {
-		speed = ofRandom(1, 3);
+		speed2 = ofRandom(1, 13);
 		alienPos.set(ofRandom(1300, 1900), -900);
 		alienOn = true;
 	}
 	else {
-		alienPos.y += speed;
-		if (alienPos.y > height + ofRandom(500)) alienOn = false;
+		alienPos.y += speed2;
+		if (alienPos.y > height + ofRandom(1000)) alienOn = false;
 	}
 
 	if (!plane1On) {
-		speed = ofRandom(1, 4);
-		plane1Pos.set(ofRandom(1600, 1900), -900);
+		speed3 = ofRandom(1, 4);
+		plane1Pos.set(ofRandom(200), -400);
 		plane1On = true;
 	}
 	else {
-		plane1Pos.y += speed;
+		plane1Pos.y += speed3;
 		if (plane1Pos.y > height + ofRandom(500)) plane1On = false;
 	}
 
 	if (!plane2On) {
-		speed = ofRandom(3, 6);
-		plane2Pos.set(ofRandom(1700, 1900), ofRandom(-200));
+		speed4 = ofRandom(3, 7);
+		plane2Pos.set(ofRandom(1300, 1900), ofRandom(-900));
 		plane2On = true;
 	}
 	else {
-		plane2Pos.y += speed;
-		if (plane2Pos.y > height + ofRandom(-500)) plane2On = false;
+		plane2Pos.y += speed4;
+		if (plane2Pos.y > height + ofRandom(500)) plane2On = false;
 	}
 }
 
